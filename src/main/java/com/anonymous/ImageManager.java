@@ -1,5 +1,7 @@
 package com.anonymous;
 
+import java.util.Arrays;
+
 public class ImageManager {
 
     /**
@@ -99,7 +101,7 @@ public class ImageManager {
 
         for (int i = 0; i < img1.getWidth(); i++) {
             for (int j = 0; j < img1.getHeight(); j++) {
-                if (img1.getPixel(i, j).getPixelValue() != img2.getPixel(i, j).getPixelValue())
+                if (Arrays.equals(img1.getPixel(i, j).getPixelValue(), img2.getPixel(i, j).getPixelValue()))
                     return false;
             }
         }
