@@ -65,13 +65,19 @@ public class ImageManager {
     /**
      * Resize the current image
      * @param img Image to resize
-     * @param width Width of the new image
-     * @param height Height of the new image
      * @return The new image
      */
-    public static Image resize(Image img, Integer width, Integer height) {
+    public static Image resize(Image img) {
 
-        return new Image(100, 100, img.getMaxValue());
+        if (img.getHeight() <= 2 || img.getWidth() <= 2)
+            throw new RuntimeException("Image is already too small to resize");
+
+
+        final int newWidth = img.getWidth() / 2;
+        final int newHeight = img.getHeight() / 2;
+
+
+        return new Image(10, 10, 255);
     }
 
     /**
