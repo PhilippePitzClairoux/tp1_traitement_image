@@ -82,6 +82,9 @@ public class ImageManager {
      */
     public static boolean areIdentical(Image img1, Image img2) {
 
+        if (img1 == img2)
+            return true;
+
         if (img1.getClass() != img1.getClass())
             return false;
 
