@@ -82,12 +82,25 @@ public class ImageManager {
      */
     public static boolean areIdentical(Image img1, Image img2) {
 
+        if (img1.getClass() != img1.getClass())
+            return false;
+
+        if ((!img1.getWidth().equals(img2.getWidth())) && (!img1.getHeight().equals(img2.getHeight())))
+            return false;
+
+        for (int i = 0; i < img1.getWidth(); i++) {
+            for (int j = 0; j < img1.getHeight(); j++) {
+                if (img1.getPixel(i, j).getPixelValue() != img2.getPixel(i, j).getPixelValue())
+                    return false;
+            }
+        }
+
         return true;
     }
 
     /**
      * Perform a 90 degree rotation on an image
-     * @param img
+     * @param img Image to rotate
      */
     public static void rotate(Image img) {
 
