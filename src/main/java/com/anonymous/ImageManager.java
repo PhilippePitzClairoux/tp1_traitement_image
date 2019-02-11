@@ -4,6 +4,17 @@ import java.util.Arrays;
 
 public class ImageManager {
 
+    private static void addArrays(Integer[] toAddTo, Integer[] toAddFrom) {
+
+        if (toAddTo.length != toAddFrom.length)
+            throw new RuntimeException("Must pas two arrays with the same length");
+
+        for (int i = 0; i < toAddTo.length; i++) {
+            toAddTo[i] += toAddFrom[i];
+        }
+
+    }
+
     /**
      * Open "filename" and load it's content inside "img"
      * @param img Object to fill information in.
@@ -71,6 +82,9 @@ public class ImageManager {
      */
     public static Image resize(Image img) {
 
+        if (img == null)
+            throw new RuntimeException("Cannot pass null object");
+
         if (img.getHeight() <= 2 || img.getWidth() <= 2)
             throw new RuntimeException("Image is already too small to resize");
 
@@ -78,8 +92,49 @@ public class ImageManager {
         final int newWidth = img.getWidth() / 2;
         final int newHeight = img.getHeight() / 2;
 
+        Image newimg = (img instanceof PGM ? new PGM(newWidth, newHeight, img.getMaxValue()) :
+                new PPM(newWidth, newHeight, img.getMaxValue()));
 
-        return new Image(10, 10, 255);
+        if (img.getPixel(0, 0) instanceof PixelPGM)
+            for (int i = 0; i < img.getHeight(); i+=2) {
+                for (int j = 0; j < img.getWidth(); j+=2) {
+
+                    int average = img.getPixel(i, j).getPixelValue()[0];
+
+                    if (i + 1 <= img.getHeight() && j + 1 <= img.getWidth()) {
+                        average += img.getPixel(i, j+1).getPixelValue()[0];
+                        average += img.getPixel(i + 1, j).getPixelValue()[0];
+                        average += img.getPixel(i + 1, j + 1).getPixelValue()[0];
+                    }
+
+                    newimg.setPixel(new PixelPGM(img.getMaxValue(), average / 4), i / 2, j / 2);
+                }
+            }
+        else
+            for (int i = 0; i < img.getHeight(); i += 2) {
+                for (int j = 0; j < img.getWidth(); j += 2) {
+
+                    Integer[] average = img.getPixel(i, j).getPixelValue();
+
+                    if (i + 1 < img.getWidth() && j + 1 < img.getHeight()) {
+
+                        Integer[] tmp = img.getPixel(i, j + 1).getPixelValue();
+                        addArrays(average, tmp);
+
+                        tmp = img.getPixel(i + 1, j).getPixelValue();
+                        addArrays(average, tmp);
+
+                        tmp = img.getPixel(i + 1, j + 1).getPixelValue();
+                        addArrays(average, tmp);
+
+                    }
+
+                    newimg.setPixel(new PixelPPM(img.getMaxValue(), average[0] / 4,
+                            average[1] / 4, average[2] / 4), i /2 , j / 2);
+                }
+            }
+
+        return newimg;
     }
 
     /**
@@ -99,8 +154,8 @@ public class ImageManager {
         if ((!img1.getWidth().equals(img2.getWidth())) && (!img1.getHeight().equals(img2.getHeight())))
             return false;
 
-        for (int i = 0; i < img1.getWidth(); i++) {
-            for (int j = 0; j < img1.getHeight(); j++) {
+        for (int i = 0; i < img1.getHeight(); i++) {
+            for (int j = 0; j < img1.getWidth(); j++) {
                 if (Arrays.equals(img1.getPixel(i, j).getPixelValue(), img2.getPixel(i, j).getPixelValue()))
                     return false;
             }
