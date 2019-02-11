@@ -10,6 +10,7 @@ public class Main {
 
         PGM test = new PGM(10, 10, 255);
         PGM test1 = new PGM(10, 10, 255);
+
         //PGM test3 = new PGM(0, 0, 255);
 
         for (int i = 0; i < test.getWidth(); i++) {
@@ -41,5 +42,4 @@ public class Main {
             System.out.println();
         }
     }
-
 }
