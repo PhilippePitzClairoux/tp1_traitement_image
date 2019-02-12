@@ -40,17 +40,17 @@ public class Image {
         if (pix == null)
             throw new RuntimeException("Null pixel has been passed.");
 
-        data[x][y] = pix;
+        data[y][x] = pix;
     }
 
     /**
      * Get the pixel based on an (X, Y) pair
      * @param x X position in data
      * @param y Y position in data
-     * @return
+     * @return Return the pixel at the position x/y
      */
     public Pixel getPixel(Integer x, Integer y) {
-        return data[x][y];
+        return data[y][x];
     }
 
     /**
@@ -91,5 +91,9 @@ public class Image {
      */
     public Integer getMaxValue() {
         return maxValue;
+    }
+
+    public void updateInternalData() {
+        this.data = new Pixel[height][width];
     }
 }
