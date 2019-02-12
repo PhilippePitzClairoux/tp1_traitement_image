@@ -62,7 +62,7 @@ public class ImageManager {
             if (header.equals("P3")) {
                 for (int i = 0; i < img.getHeight(); i++) {
                     for (int j = 0; j < img.getWidth(); j++) {
-                        img.setPixel(new PixelPPM(maxValue, Integer.parseInt(input.next()),
+                        img.setPixel(new PixelPPM(Integer.parseInt(input.next()),
                                 Integer.parseInt(input.next()), Integer.parseInt(input.next())), j, i);
                     }
                 }
@@ -70,7 +70,7 @@ public class ImageManager {
 
                 for (int i = 0; i < img.getHeight(); i++) {
                     for (int j = 0; j < img.getWidth(); j++) {
-                        img.setPixel(new PixelPGM(maxValue, Integer.parseInt(input.next())), j, i);
+                        img.setPixel(new PixelPGM(Integer.parseInt(input.next())), j, i);
                     }
                 }
 
@@ -165,7 +165,7 @@ public class ImageManager {
                         average += img.getPixel(i + 1, j + 1).getPixelValue()[0];
                     }
 
-                    newimg.setPixel(new PixelPGM(img.getMaxValue(), average / 4), i / 2, j / 2);
+                    newimg.setPixel(new PixelPGM(average / 4), i / 2, j / 2);
                 }
             }
         else
@@ -187,7 +187,7 @@ public class ImageManager {
 
                     }
 
-                    newimg.setPixel(new PixelPPM(img.getMaxValue(), average[0] / 4,
+                    newimg.setPixel(new PixelPPM(average[0] / 4,
                             average[1] / 4, average[2] / 4), i /2 , j / 2);
                 }
             }

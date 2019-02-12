@@ -22,10 +22,9 @@ public class PixelPGM extends Pixel {
 
     /**
      * PixelPGM constrcutor with a custom value
-     * @param maxValue The maxValue a pixel can have
      * @param greyValue The greyValue of PixelPGM
      */
-    public PixelPGM(Integer maxValue, Integer greyValue) {
+    public PixelPGM(Integer greyValue) {
         super();
         this.greyValue = greyValue;
     }

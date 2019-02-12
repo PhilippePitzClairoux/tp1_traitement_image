@@ -17,8 +17,8 @@ public class Main {
 
         for (int i = 0; i < test.getWidth(); i++) {
             for (int j = 0; j < test.getHeight(); j++) {
-                test.setPixel(new PixelPGM(255, (int) ((Math.random() * 100) % 255)), i, j);
-                test1.setPixel(new PixelPGM(255, (int) ((Math.random() * 100) % 255)), i, j);
+                test.setPixel(new PixelPGM((int) ((Math.random() * 100) % 255)), i, j);
+                test1.setPixel(new PixelPGM((int) ((Math.random() * 100) % 255)), i, j);
             }
         }
 
