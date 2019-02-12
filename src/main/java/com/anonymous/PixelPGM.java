@@ -6,10 +6,9 @@ public class PixelPGM extends Pixel {
 
     /**
      * PixelPGM constructor with a default value of 0
-     * @param maxValue The maxValue of the pixel
      */
-    public PixelPGM(Integer maxValue) {
-        super(maxValue);
+    public PixelPGM() {
+        super();
         this.greyValue = 0;
     }
 
@@ -27,7 +26,7 @@ public class PixelPGM extends Pixel {
      * @param greyValue The greyValue of PixelPGM
      */
     public PixelPGM(Integer maxValue, Integer greyValue) {
-        super(maxValue);
+        super();
         this.greyValue = greyValue;
     }
 

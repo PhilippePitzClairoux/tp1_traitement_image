@@ -1,6 +1,7 @@
 package com.anonymous;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -10,6 +11,7 @@ public class Main {
 
         PGM test = new PGM(10, 10, 255);
         PGM test1 = new PGM(10, 10, 255);
+        PPM test2 = new PPM(10, 10, 1);
 
         //PGM test3 = new PGM(0, 0, 255);
 
@@ -27,6 +29,10 @@ public class Main {
         test = (PGM) ImageManager.resize(test);
         System.out.println("New image : \n");
         printArray(test);
+
+        File f = new File("test.pgm");
+
+        ImageManager.openFile(test , f);
 
     }
 
