@@ -48,14 +48,13 @@ public class ImageManager {
                     if (stats.length != 2)
                         throw new RuntimeException("Invalid Size");
                     else {
-                        width = Integer.parseInt(stats[0]);
-                        height = Integer.parseInt(stats[1]);
+                        img.setHeight(Integer.parseInt(stats[0]));
+                        img.setWidth(Integer.parseInt(stats[1]));
                         break;
                     }
                 }
             }
-            img.setHeight(height);
-            img.setWidth(width);
+
             img.setMaxValue(Integer.parseInt(input.nextLine()));
 
             img.updateInternalData();
@@ -128,8 +127,6 @@ public class ImageManager {
 
             e.printStackTrace();
         }
-
-
     }
 
     /**
@@ -139,6 +136,30 @@ public class ImageManager {
      */
     public static void copy(Image src, Image dest) {
 
+        if (ImageManager.areIdentical(src, dest))
+            throw new RuntimeException("Images are already Identical");
+
+        if (!src.header.equals(dest.header))
+            throw new RuntimeException("Classes differenciate. This cannot happen.");
+
+        dest.setWidth(src.getWidth());
+        dest.setHeight(src.getHeight());
+        dest.updateInternalData();
+
+        if (src.header.equals("P3")) {
+            for (int i = 0; i < src.getHeight(); i++) {
+                for (int j = 0; j < src.getWidth(); j++) {
+                    Integer[] vals = src.getPixel(j, i).getPixelValue();
+                    dest.setPixel(new PixelPPM(vals[0], vals[1], vals[2]), j, i);
+                }
+            }
+        } else {
+            for (int i = 0; i < src.getHeight(); i++) {
+                for (int j = 0; j < src.getWidth(); j++) {
+                    dest.setPixel(new PixelPGM(src.getPixel(j, i).getPixelValue()[0]), j, i);
+                }
+            }
+        }
     }
 
     /**

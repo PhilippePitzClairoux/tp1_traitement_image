@@ -34,6 +34,11 @@ public class Main {
 
         ImageManager.openFile(test , f);
 
+        File f1 = new File("hehe.pgm");
+
+        ImageManager.writeFile(test, f1);
+
+
     }
 
     private static void printArray(PGM test) {
