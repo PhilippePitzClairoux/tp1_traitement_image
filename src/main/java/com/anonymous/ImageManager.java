@@ -56,7 +56,7 @@ public class ImageManager {
             }
             img.setHeight(height);
             img.setWidth(width);
-            maxValue = Integer.parseInt(input.nextLine());
+            img.setMaxValue(Integer.parseInt(input.nextLine()));
 
             img.updateInternalData();
             if (header.equals("P3")) {

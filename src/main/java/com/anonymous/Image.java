@@ -5,7 +5,7 @@ public class Image {
     private Pixel[][] data;
     private Integer width;
     private Integer height;
-    final private Integer maxValue;
+    private Integer maxValue;
 
 
     /**
@@ -87,6 +87,10 @@ public class Image {
      */
     public Integer getMaxValue() {
         return maxValue;
+    }
+
+    public void setMaxValue(Integer maxval) {
+        this.maxValue = maxval;
     }
 
     public void updateInternalData() {
