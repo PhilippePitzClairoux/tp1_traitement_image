@@ -11,7 +11,6 @@ public class PixelPPM extends Pixel {
      * @param maxValue
      */
     public PixelPPM(Integer maxValue) {
-        super(maxValue);
 
         this.red = 0;
         this.green = 0;
@@ -28,13 +27,12 @@ public class PixelPPM extends Pixel {
 
     /**
      * PixelPPM constrcutor that takes a max value and RGB value
-     * @param maxValue The max value of the pixel
      * @param red The red value of the pixel
      * @param green The green value of the pixel
      * @param blue The blue value of the pixel
      */
-    public PixelPPM(Integer maxValue, Integer red, Integer green, Integer blue) {
-        super(maxValue);
+    public PixelPPM(Integer red, Integer green, Integer blue) {
+        super();
 
         this.red = red;
         this.green = green;

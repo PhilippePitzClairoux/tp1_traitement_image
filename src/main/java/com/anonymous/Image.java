@@ -7,6 +7,11 @@ public class Image {
     private Integer height;
     final private Integer maxValue;
 
+
+    public void updateInternalData() {
+        this.data = new Pixel[height][width];
+    }
+
     /**
      * The only constructor Image has.
      * @param width Width of the image
