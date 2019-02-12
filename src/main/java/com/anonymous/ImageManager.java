@@ -1,6 +1,8 @@
 package com.anonymous;
 
+import java.io.*;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class ImageManager {
 
@@ -12,16 +14,72 @@ public class ImageManager {
         for (int i = 0; i < toAddTo.length; i++) {
             toAddTo[i] += toAddFrom[i];
         }
-
     }
 
     /**
      * Open "filename" and load it's content inside "img"
      * @param img Object to fill information in.
-     * @param filename The name of the file to open.
+     * @param file The name of the file to open.
      */
-    public static void openFile(Image img, String filename){
+    public static void openFile(Image img, File file){
+        try {
+            Scanner input = new Scanner(file);
+            String buff, header = "";
+            int width = 0, height = 0, maxValue;
 
+            //get header
+            while((buff = input.nextLine()) != null) {
+
+                if (buff.contains("#"))
+                    continue;
+
+                if (!buff.equals("P3") && !buff.equals("P2"))
+                    throw new RuntimeException("Invalid header found");
+                else {
+                    header = buff;
+                    break;
+                }
+            }
+
+            while((buff = input.nextLine()) != null) {
+
+                if (!buff.matches(" ") && !buff.startsWith("#")){
+                    String[] stats = buff.split(" ");
+                    if (stats.length != 2)
+                        throw new RuntimeException("Invalid Size");
+                    else {
+                        width = Integer.parseInt(stats[0]);
+                        height = Integer.parseInt(stats[1]);
+                        break;
+                    }
+                }
+            }
+            img.setHeight(height);
+            img.setWidth(width);
+            maxValue = Integer.parseInt(input.nextLine());
+
+            img.updateInternalData();
+            if (header.equals("P3")) {
+                for (int i = 0; i < img.getHeight(); i++) {
+                    for (int j = 0; j < img.getWidth(); j++) {
+                        img.setPixel(new PixelPPM(Integer.parseInt(input.next()),
+                                Integer.parseInt(input.next()), Integer.parseInt(input.next())), j, i);
+                    }
+                }
+            } else {
+
+                for (int i = 0; i < img.getHeight(); i++) {
+                    for (int j = 0; j < img.getWidth(); j++) {
+                        img.setPixel(new PixelPGM(Integer.parseInt(input.next())), j, i);
+                    }
+                }
+
+            }
+
+        } catch (FileNotFoundException e) {
+
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -107,7 +165,7 @@ public class ImageManager {
                         average += img.getPixel(i + 1, j + 1).getPixelValue()[0];
                     }
 
-                    newimg.setPixel(new PixelPGM(img.getMaxValue(), average / 4), i / 2, j / 2);
+                    newimg.setPixel(new PixelPGM(average / 4), i / 2, j / 2);
                 }
             }
         else
@@ -129,11 +187,10 @@ public class ImageManager {
 
                     }
 
-                    newimg.setPixel(new PixelPPM(img.getMaxValue(), average[0] / 4,
+                    newimg.setPixel(new PixelPPM(average[0] / 4,
                             average[1] / 4, average[2] / 4), i /2 , j / 2);
                 }
             }
-
         return newimg;
     }
 
@@ -160,7 +217,6 @@ public class ImageManager {
                     return false;
             }
         }
-
         return true;
     }
 
