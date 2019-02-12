@@ -12,7 +12,7 @@ public class PGM extends Image {
      */
     public PGM(Integer width, Integer height, Integer maxValue) {
 
-        super(width, height, maxValue);
+        super(width, height, maxValue, "P2");
     }
 
     @Override

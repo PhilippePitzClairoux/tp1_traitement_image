@@ -25,7 +25,7 @@ public class ImageManager {
         try {
             Scanner input = new Scanner(file);
             String buff, header = "";
-            int width = 0, height = 0, maxValue;
+            int width = 0, height = 0;
 
             //get header
             while((buff = input.nextLine()) != null) {
@@ -76,6 +76,8 @@ public class ImageManager {
 
             }
 
+            input.close();
+
         } catch (FileNotFoundException e) {
 
             e.printStackTrace();
@@ -85,9 +87,48 @@ public class ImageManager {
     /**
      * Write an image to a file based on it's type (PPM or PGM)
      * @param img The image to write to the file
-     * @param filename The name of the file the image is going to be outputed in.
+     * @param file File to write image in
      */
-    public static void writeFile(Image img, String filename) {
+    public static void writeFile(Image img, File file) {
+
+        try {
+
+            BufferedWriter out = new BufferedWriter(new FileWriter(file));
+
+            //write header!
+            out.write(String.format("%s%n", img.header));
+            //write width and height!
+            out.write(String.format("%d %d%n", img.getHeight(), img.getWidth()));
+            //write max value!
+            out.write(String.format("%d%n", img.getMaxValue()));
+
+            if (img.header.equals("P2")) {
+                for (int i = 0; i < img.getHeight(); i++) {
+                    for (int j = 0; j < img.getWidth(); j++) {
+                        Integer[] vals = img.getPixel(j, i).getPixelValue();
+                        out.write(String.format("%d ", vals[0]));
+                    }
+                    out.write(String.format("%n"));
+                }
+            } else {
+                for (int i = 0; i < img.getHeight(); i++) {
+                    for (int j = 0; j < img.getWidth(); j++) {
+                        Integer[] vals = img.getPixel(j, i).getPixelValue();
+                        out.write(String.format("%d %d %d ", vals[0], vals[1], vals[2]));
+                    }
+                    out.write(String.format("%n"));
+                }
+            }
+
+            out.close();
+        } catch (FileNotFoundException e) {
+
+            e.printStackTrace();
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -130,7 +171,7 @@ public class ImageManager {
      */
     public static Image crop(Image img, Integer x1, Integer y1, Integer x2, Integer y2){
 
-        return new Image(100, 100, img.getMaxValue());
+        return new Image(100, 100, img.getMaxValue(), "");
     }
 
     /**

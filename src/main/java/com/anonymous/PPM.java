@@ -3,8 +3,6 @@ package com.anonymous;
 public class PPM extends Image {
 
 
-    private final String header = "P3";
-
     /**
      * PPM constructor
      * @param width The Width of the PPM image
@@ -12,7 +10,7 @@ public class PPM extends Image {
      * @param maxValue Max value a PPM image pixel can have
      */
     public PPM(Integer width, Integer height, Integer maxValue) {
-        super(width, height, maxValue);
+        super(width, height, maxValue, "P3");
     }
 
     @Override

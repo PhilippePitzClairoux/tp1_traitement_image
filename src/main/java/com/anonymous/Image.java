@@ -6,6 +6,7 @@ public class Image {
     private Integer width;
     private Integer height;
     private Integer maxValue;
+    public final String header;
 
 
     /**
@@ -14,8 +15,9 @@ public class Image {
      * @param height Height of the image
      * @param maxValue The highest value a pixel can have
      */
-    public Image(Integer width, Integer height, Integer maxValue) {
+    public Image(Integer width, Integer height, Integer maxValue, String header) {
         this.maxValue = maxValue;
+        this.header = header;
 
         if (width == 0 && height == 0)
             throw new RuntimeException("Height and width CANNOT be at 0 at the same time.");
@@ -24,6 +26,7 @@ public class Image {
         this.height = height;
         this.data = new Pixel[width][height];
     }
+
 
     /**
      * Set the value of a pixel
