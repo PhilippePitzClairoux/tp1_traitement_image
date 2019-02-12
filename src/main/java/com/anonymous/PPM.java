@@ -2,6 +2,9 @@ package com.anonymous;
 
 public class PPM extends Image {
 
+
+    private final String header = "P3";
+
     /**
      * PPM constructor
      * @param width The Width of the PPM image

@@ -2,6 +2,8 @@ package com.anonymous;
 
 public class PGM extends Image {
 
+    private final String header = "P2";
+
     /**
      * PGM constructor
      * @param width Width of the PGM image
