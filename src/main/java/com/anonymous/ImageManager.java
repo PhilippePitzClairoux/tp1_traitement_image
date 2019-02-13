@@ -190,7 +190,33 @@ public class ImageManager {
      */
     public static Pixel predominantColor(Image img) {
 
-        return new PixelPGM(255);
+        if (img == null)
+            throw new RuntimeException("Cannot pass null object");
+
+        if(img instanceof PPM) {
+            Integer sumR = 0, sumG = 0, sumB = 0;
+            for (int i = 0; i < img.getHeight(); i++) {
+                for (int j= 0; j < img.getWidth(); j++) {
+                    PixelPPM pixel = (PixelPPM) img.getPixel(j, i);
+                    sumR += pixel.getRed();
+                    sumG += pixel.getGreen();
+                    sumB += pixel.getBlue();
+                }
+            }
+            int numPixels = img.getWidth()*img.getHeight();
+            return new PixelPPM(sumR / numPixels, sumG / numPixels, sumB / numPixels);
+        }
+        else {
+            Integer sum = 0;
+            for (int i = 0; i < img.getHeight(); i++) {
+                for (int j= 0; j < img.getWidth(); j++) {
+                    PixelPGM pixel = (PixelPGM) img.getPixel(j, i);
+                    sum += pixel.getPixelValue()[0];
+                }
+            }
+            int numPixels = img.getWidth()*img.getHeight();
+            return new PixelPGM(sum/numPixels);
+        }
     }
 
     /**
@@ -416,7 +442,7 @@ public class ImageManager {
     public static Image rotate(Image img) {
 
         if (img == null)
-            throw new RuntimeException("Cannot pass null object");
+            throw new RuntimeException("Cannot pass null object.");
 
         Integer width = img.getWidth();
         Integer height = img.getHeight();
@@ -425,7 +451,7 @@ public class ImageManager {
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                newimg.setPixel(img.getPixel(i, width-j-1),j,i);
+                newimg.setPixel(img.getPixel(j,height-1-i),i,j);
             }
         }
         return newimg;
