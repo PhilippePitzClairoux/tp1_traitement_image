@@ -1,5 +1,9 @@
 package com.anonymous.pixel;
 
+/**
+ *
+ * @author Thia
+ */
 public abstract class Pixel {
 
     /**

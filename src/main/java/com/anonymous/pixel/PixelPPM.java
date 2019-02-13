@@ -1,5 +1,9 @@
 package com.anonymous.pixel;
 
+/**
+ *
+ * @author Thia
+ */
 public class PixelPPM extends Pixel {
 
     private Integer red;
