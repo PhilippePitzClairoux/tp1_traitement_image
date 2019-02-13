@@ -23,20 +23,13 @@ public class Main {
             }
         }
 
-        ImageManager.copy(test, test1);
+        ImageManager.copy(test, test1); //images will be the same after this
         System.out.println("Are the images the same ? " + ImageManager.areIdentical(test, test1));
-
-
-        printArray(test);
-
-        //test = (PPM) ImageManager.resize(test);
-        System.out.println("New image : \n");
-        printArray(test);
 
         //openFile and writeFile with pgm
         File f = new File("test.pgm");
         ImageManager.openFile(test3 , f);
-        ImageManager.brightness(test3, 1024);
+        ImageManager.brightness(test3, -30);
         File f1 = new File("output.pgm");
         ImageManager.writeFile(test3, f1);
 
@@ -47,6 +40,19 @@ public class Main {
         File f3 = new File("output.ppm");
         ImageManager.writeFile(test, f3);
 
+        //openFile and writeFile with pgm
+        File f4 = new File("test.pgm");
+        ImageManager.openFile(test3 , f4);
+        test3 = (PGM) ImageManager.crop(test3, 0, 0, 3, 3);
+        File f5 = new File("crop.pgm");
+        ImageManager.writeFile(test3, f5);
+
+        //openFile and writeFile with PPM
+        File f6 = new File("wow.ppm");
+        ImageManager.openFile(test, f6);
+        test = (PPM) ImageManager.crop(test, 0, 0, 0, 5);
+        File f7 = new File("crop.ppm");
+        ImageManager.writeFile(test, f7);
 
 
 

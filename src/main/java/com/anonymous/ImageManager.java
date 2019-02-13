@@ -22,6 +22,10 @@ public class ImageManager {
      * @param file The name of the file to open.
      */
     public static void openFile(Image img, File file){
+
+        if (img == null || file == null)
+            throw new RuntimeException("Cannot pass null object");
+
         try {
             Scanner input = new Scanner(file);
             String buff, header = "";
@@ -94,6 +98,9 @@ public class ImageManager {
      */
     public static void writeFile(Image img, File file) {
 
+        if (img == null || file == null)
+            throw new RuntimeException("Cannot pass null object");
+
         try {
 
             BufferedWriter out = new BufferedWriter(new FileWriter(file));
@@ -140,6 +147,9 @@ public class ImageManager {
      */
     public static void copy(Image src, Image dest) {
 
+        if (src == null || dest == null)
+            throw new RuntimeException("Cannot pass null object");
+
         if (ImageManager.areIdentical(src, dest))
             throw new RuntimeException("Images are already Identical");
 
@@ -182,6 +192,12 @@ public class ImageManager {
      * @param v The level of brightness
      */
     public static void brightness(Image img, Integer v) {
+
+        if (img == null)
+            throw new RuntimeException("Cannot pass null object");
+
+        if (v == 0)
+            return;
 
         if (img.header.equals("P3")) {
             for (int i = 0; i < img.getHeight(); i++) {
@@ -234,7 +250,59 @@ public class ImageManager {
      */
     public static Image crop(Image img, Integer x1, Integer y1, Integer x2, Integer y2){
 
-        return new Image(100, 100, img.getMaxValue(), "");
+        if (img == null)
+            throw new RuntimeException("Cannot pass null object");
+
+        if (x1 < 0 || x2 < 0 || y1 < 0 || y2 < 0)
+            throw new RuntimeException("Cannot have negative numbers");
+
+        if (y1 > img.getHeight() || y2 > img.getHeight())
+            throw new RuntimeException("Cannot have a Y higher than the height");
+
+        if (x1 > img.getWidth() || x2 > img.getWidth())
+            throw new RuntimeException("Cannot have a X higher than the height");
+
+
+        int newWidth = (x2 - x1) + 1;
+        int newHeight = (y2 - y1) + 1;
+
+        Image newimg = (img instanceof PGM ? new PGM(newWidth, newHeight, img.getMaxValue()) :
+                new PPM(newWidth, newHeight, img.getMaxValue()));
+
+        int xTracker = 0, yTracker = 0;
+
+
+        if (img.header.equals("P3")) {
+
+            for (int i = 0; i < img.getHeight(); i++) {
+                for (int j = 0; j < img.getWidth(); j++) {
+
+                    if (i >= y1 && i <= y2 && j >= x1 && j <= x2) {
+
+                        Integer[] vals = img.getPixel(j, i).getPixelValue();
+                        newimg.setPixel(new PixelPPM(vals[0], vals[1], vals[2]), xTracker, yTracker );
+                        ++xTracker;
+                    }
+                }
+                ++yTracker;
+                xTracker = 0;
+            }
+
+        } else {
+            for (int i = 0; i < img.getHeight(); i++) {
+                for (int j = 0; j < img.getWidth(); j++) {
+
+                    if (i >= y1 && i <= y2 && j >= x1 && j <= x2) {
+                        newimg.setPixel(new PixelPGM(img.getPixel(j, i).getPixelValue()[0]), xTracker, yTracker );
+                        ++xTracker;
+                    }
+                }
+                ++yTracker;
+                xTracker = 0;
+            }
+        }
+
+        return newimg;
     }
 
     /**
@@ -312,6 +380,9 @@ public class ImageManager {
      * @return Returns true of they are the same and false if they aren't
      */
     public static boolean areIdentical(Image img1, Image img2) {
+
+        if (img1 == null || img2 == null)
+            throw new RuntimeException("Cannot pass null object");
 
         if (img1 == img2)
             return true;
