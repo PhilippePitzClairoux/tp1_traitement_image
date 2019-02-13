@@ -5,7 +5,8 @@ public class Image {
     private Pixel[][] data;
     private Integer width;
     private Integer height;
-    final private Integer maxValue;
+    private Integer maxValue;
+    public final String header;
 
 
     /**
@@ -14,16 +15,18 @@ public class Image {
      * @param height Height of the image
      * @param maxValue The highest value a pixel can have
      */
-    public Image(Integer width, Integer height, Integer maxValue) {
+    public Image(Integer width, Integer height, Integer maxValue, String header) {
         this.maxValue = maxValue;
+        this.header = header;
 
         if (width == 0 && height == 0)
             throw new RuntimeException("Height and width CANNOT be at 0 at the same time.");
 
         this.width = width;
         this.height = height;
-        this.data = new Pixel[width][height];
+        this.data = new Pixel[height][width];
     }
+
 
     /**
      * Set the value of a pixel
@@ -87,6 +90,10 @@ public class Image {
      */
     public Integer getMaxValue() {
         return maxValue;
+    }
+
+    public void setMaxValue(Integer maxval) {
+        this.maxValue = maxval;
     }
 
     public void updateInternalData() {

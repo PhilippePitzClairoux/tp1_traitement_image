@@ -2,6 +2,8 @@ package com.anonymous;
 
 public class PGM extends Image {
 
+    private final String header = "P2";
+
     /**
      * PGM constructor
      * @param width Width of the PGM image
@@ -10,7 +12,7 @@ public class PGM extends Image {
      */
     public PGM(Integer width, Integer height, Integer maxValue) {
 
-        super(width, height, maxValue);
+        super(width, height, maxValue, "P2");
     }
 
     @Override

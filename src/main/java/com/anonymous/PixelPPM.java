@@ -6,6 +6,7 @@ public class PixelPPM extends Pixel {
     private Integer green;
     private Integer blue;
 
+
     /**
      * PixelPPM constrcutor with a pixels maxValue (RGB set at 0)
      * @param maxValue
