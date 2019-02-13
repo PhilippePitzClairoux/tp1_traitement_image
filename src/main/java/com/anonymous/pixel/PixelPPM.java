@@ -11,6 +11,18 @@ public class PixelPPM extends Pixel {
     private Integer green;
     private Integer blue;
 
+    public PixelPPM(Pixel p) {
+
+        if (p instanceof PixelPGM)
+            throw new RuntimeException("Cannot give a PixelPGM to a PixelPPM");
+
+        Integer[] vals = p.getPixelValue();
+
+        this.red = vals[0];
+        this.green = vals[1];
+        this.blue = vals[2];
+    }
+
 
     /**
      * PixelPPM constrcutor with a pixels maxValue (RGB set at 0)

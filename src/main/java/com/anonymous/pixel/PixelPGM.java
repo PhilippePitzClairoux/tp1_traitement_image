@@ -9,6 +9,16 @@ public class PixelPGM extends Pixel {
 
     private Integer greyValue;
 
+    public PixelPGM(Pixel p) {
+
+        if (p instanceof PixelPPM)
+            throw new RuntimeException("Cannot give a PixelPPM to a PixelPGM");
+
+        this.greyValue = p.getPixelValue()[0];
+
+    }
+
+
     /**
      * PixelPGM constructor with a default value of 0
      */
