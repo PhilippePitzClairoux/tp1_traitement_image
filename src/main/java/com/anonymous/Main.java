@@ -73,8 +73,11 @@ public class Main {
         File f11 = new File("test_images/rotate.pgm");
         ImageManager.writeFile(test3, f11);
 
-        PixelPGM ppgm = (PixelPGM) ImageManager.predominantColor(test3);
-        PixelPPM  ppm = (PixelPPM) ImageManager.predominantColor(test);
+        PixelPGM ppgm = (PixelPGM) ImageManager.dominantColor(test3);
+        PixelPPM  ppm = (PixelPPM) ImageManager.dominantColor(test);
+
+        printArray(test3);
+        printArray(test);
 
         System.out.printf("Predominant color of test.pgm : %s%n", Arrays.toString(ppgm.getPixelValue()));
         System.out.printf("Predominant color of test.pgm : %s%n", Arrays.toString(ppm.getPixelValue()));

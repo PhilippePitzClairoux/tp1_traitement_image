@@ -8,8 +8,8 @@ import com.anonymous.pixel.PixelPGM;
 import com.anonymous.pixel.PixelPPM;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * Contains static methods to manipulate PPM/PGM images
@@ -32,6 +32,25 @@ public class ImageManager {
             toAddTo[i] += toAddFrom[i];
         }
     }
+
+    private static boolean arrayContainsPixel(ArrayList<Object> a, Pixel b) {
+
+        for (int i = 0; i < a.size(); i++) {
+            if (Arrays.equals(((Pixel) a.get(i)).getPixelValue(), b.getPixelValue()))
+                return true;
+        }
+        return false;
+    }
+
+    private static int getIndexOfPixel(ArrayList<Object> a, Pixel b) {
+
+        for (int i = 0; i < a.size(); i++) {
+            if (Arrays.equals(((Pixel) a.get(i)).getPixelValue(), b.getPixelValue()))
+                return i;
+        }
+        return -1;
+    }
+
 
     /**
      * Open "file" and load it's content inside "img"
@@ -197,35 +216,46 @@ public class ImageManager {
      * @param img The image to fetch the pixel from
      * @return The most used pixel/color
      */
-    public static Pixel predominantColor(Image img) {
+    public static Pixel dominantColor(Image img) {
 
         if (img == null)
             throw new RuntimeException("Cannot pass null object");
 
-        if(img instanceof PPM) {
-            Integer sumR = 0, sumG = 0, sumB = 0;
-            for (int i = 0; i < img.getHeight(); i++) {
-                for (int j= 0; j < img.getWidth(); j++) {
-                    PixelPPM pixel = (PixelPPM) img.getPixel(j, i);
-                    sumR += pixel.getRed();
-                    sumG += pixel.getGreen();
-                    sumB += pixel.getBlue();
+        /*
+            Index [0] is a pixel
+            Index [1] is an Integer
+        */
+        ArrayList<ArrayList<Object>> stats = new ArrayList<ArrayList<Object>>();
+        stats.add(new ArrayList<Object>());
+        stats.add(new ArrayList<Object>());
+
+        for (int y = 0; y < img.getHeight(); y++) {
+            for (int x = 0; x < img.getWidth(); x++) {
+                System.out.printf("Current x %d Current y %d%n", x, y);
+
+                if (stats.get(0).size() == 0 || !arrayContainsPixel(stats.get(0), img.getPixel(x, y))) {
+                    stats.get(0).add(img.getPixel(x, y));
+                    stats.get(1).add(1);
+                } else {
+
+                    int index = getIndexOfPixel(stats.get(0), img.getPixel(x, y));
+                    stats.get(1).set(index, (Integer) stats.get(1).get(index) + 1);
+
                 }
             }
-            int numPixels = img.getWidth()*img.getHeight();
-            return new PixelPPM(sumR / numPixels, sumG / numPixels, sumB / numPixels);
         }
-        else {
-            Integer sum = 0;
-            for (int i = 0; i < img.getHeight(); i++) {
-                for (int j= 0; j < img.getWidth(); j++) {
-                    PixelPGM pixel = (PixelPGM) img.getPixel(j, i);
-                    sum += pixel.getPixelValue()[0];
-                }
+
+        int biggestPixel = 0;
+
+        for (int i = 0; i < stats.get(1).size(); i++) {
+            if ((Integer) stats.get(1).get(i) > (Integer) stats.get(1).get(biggestPixel)) {
+                biggestPixel = i;
             }
-            int numPixels = img.getWidth()*img.getHeight();
-            return new PixelPGM(sum/numPixels);
         }
+
+        return (img instanceof PGM ? new PixelPGM((PixelPGM) stats.get(0).get(biggestPixel)) :
+                new PixelPPM((PixelPPM) stats.get(0).get(biggestPixel)));
+
     }
 
     /**
