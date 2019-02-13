@@ -1,16 +1,17 @@
 package com.anonymous;
 
-import com.anonymous.image.Image;
-import com.anonymous.image.PGM;
-import com.anonymous.image.PPM;
-import com.anonymous.pixel.Pixel;
-import com.anonymous.pixel.PixelPGM;
-import com.anonymous.pixel.PixelPPM;
+import com.anonymous.image.*;
+import com.anonymous.pixel.*;
 
 import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * Operations applicable on an image, either in PGM format or PPM format.
+ * @author Philippe Pitz Clairoux & Cynthia Vilanova
+ * Date of creation: February 7, 2019
+ */
 public class ImageManager {
 
     private static void addArrays(Integer[] toAddTo, Integer[] toAddFrom) {
@@ -29,10 +30,6 @@ public class ImageManager {
      * @param file The name of the file to open.
      */
     public static void openFile(Image img, File file){
-
-        if (img == null || file == null)
-            throw new RuntimeException("Cannot pass null object");
-
         try {
             Scanner input = new Scanner(file);
             String buff, header = "";
@@ -56,7 +53,7 @@ public class ImageManager {
                 if (!buff.matches(" ") && !buff.startsWith("#")){
                     String[] stats = buff.split(" ");
                     if (stats.length != 2)
-                        throw new RuntimeException("Invalid Size");
+                        throw new RuntimeException("Invalid size");
                     else {
                         img.setWidth(Integer.parseInt(stats[0]));
                         img.setHeight(Integer.parseInt(stats[1]));
@@ -105,9 +102,6 @@ public class ImageManager {
      */
     public static void writeFile(Image img, File file) {
 
-        if (img == null || file == null)
-            throw new RuntimeException("Cannot pass null object");
-
         try {
 
             BufferedWriter out = new BufferedWriter(new FileWriter(file));
@@ -154,11 +148,8 @@ public class ImageManager {
      */
     public static void copy(Image src, Image dest) {
 
-        if (src == null || dest == null)
-            throw new RuntimeException("Cannot pass null object");
-
         if (ImageManager.areIdentical(src, dest))
-            throw new RuntimeException("Images are already Identical");
+            throw new RuntimeException("Images are already identical.");
 
         if (!src.header.equals(dest.header))
             throw new RuntimeException("Classes differenciate. This cannot happen.");
@@ -188,9 +179,35 @@ public class ImageManager {
      * @param img The image to fetch the pixel from
      * @return The most used pixel/color
      */
-    public static Pixel predominantColor(Image img) {
+    public static Pixel dominantColor(Image img) {
 
-        return new PixelPGM(255);
+        if (img == null)
+            throw new RuntimeException("Cannot pass null object");
+        
+        if(img instanceof PPM) {
+            Integer sumR = 0, sumG = 0, sumB = 0;
+            for (int i = 0; i < img.getHeight(); i++) {
+                for (int j= 0; j < img.getWidth(); j++) {
+                    PixelPPM pixel = (PixelPPM) img.getPixel(j, i);
+                    sumR += pixel.getRed();
+                    sumG += pixel.getGreen();
+                    sumB += pixel.getBlue();
+                }
+            }
+            int numPixels = img.getWidth()*img.getHeight();
+            return new PixelPPM(sumR / numPixels, sumG / numPixels, sumB / numPixels);
+        }
+        else {
+            Integer sum = 0;
+            for (int i = 0; i < img.getHeight(); i++) {
+                for (int j= 0; j < img.getWidth(); j++) {
+                    PixelPGM pixel = (PixelPGM) img.getPixel(j, i);
+                    sum += pixel.getPixelValue()[0];
+                }
+            }
+            int numPixels = img.getWidth()*img.getHeight();
+            return new PixelPGM(sum/numPixels);
+        }
     }
 
     /**
@@ -199,12 +216,6 @@ public class ImageManager {
      * @param v The level of brightness
      */
     public static void brightness(Image img, Integer v) {
-
-        if (img == null)
-            throw new RuntimeException("Cannot pass null object");
-
-        if (v == 0)
-            return;
 
         if (img.header.equals("P3")) {
             for (int i = 0; i < img.getHeight(); i++) {
@@ -257,59 +268,7 @@ public class ImageManager {
      */
     public static Image crop(Image img, Integer x1, Integer y1, Integer x2, Integer y2){
 
-        if (img == null)
-            throw new RuntimeException("Cannot pass null object");
-
-        if (x1 < 0 || x2 < 0 || y1 < 0 || y2 < 0)
-            throw new RuntimeException("Cannot have negative numbers");
-
-        if (y1 > img.getHeight() || y2 > img.getHeight())
-            throw new RuntimeException("Cannot have a Y higher than the height");
-
-        if (x1 > img.getWidth() || x2 > img.getWidth())
-            throw new RuntimeException("Cannot have a X higher than the height");
-
-
-        int newWidth = (x2 - x1) + 1;
-        int newHeight = (y2 - y1) + 1;
-
-        Image newimg = (img instanceof PGM ? new PGM(newWidth, newHeight, img.getMaxValue()) :
-                new PPM(newWidth, newHeight, img.getMaxValue()));
-
-        int xTracker = 0, yTracker = 0;
-
-
-        if (img.header.equals("P3")) {
-
-            for (int i = 0; i < img.getHeight(); i++) {
-                for (int j = 0; j < img.getWidth(); j++) {
-
-                    if (i >= y1 && i <= y2 && j >= x1 && j <= x2) {
-
-                        Integer[] vals = img.getPixel(j, i).getPixelValue();
-                        newimg.setPixel(new PixelPPM(vals[0], vals[1], vals[2]), xTracker, yTracker );
-                        ++xTracker;
-                    }
-                }
-                ++yTracker;
-                xTracker = 0;
-            }
-
-        } else {
-            for (int i = 0; i < img.getHeight(); i++) {
-                for (int j = 0; j < img.getWidth(); j++) {
-
-                    if (i >= y1 && i <= y2 && j >= x1 && j <= x2) {
-                        newimg.setPixel(new PixelPGM(img.getPixel(j, i).getPixelValue()[0]), xTracker, yTracker );
-                        ++xTracker;
-                    }
-                }
-                ++yTracker;
-                xTracker = 0;
-            }
-        }
-
-        return newimg;
+        return new Image(100, 100, img.getMaxValue(), "");
     }
 
     /**
@@ -336,7 +295,7 @@ public class ImageManager {
             for (int i = 0; i < img.getHeight(); i+=2) {
                 for (int j = 0; j < img.getWidth(); j+=2) {
 
-                    int average = img.getPixel(i, j).getPixelValue()[0];
+                    int average = img.getPixel(j, i).getPixelValue()[0];
 
                     if (j + 1 < img.getWidth() && i + 1 < img.getHeight()){
 
@@ -388,9 +347,6 @@ public class ImageManager {
      */
     public static boolean areIdentical(Image img1, Image img2) {
 
-        if (img1 == null || img2 == null)
-            throw new RuntimeException("Cannot pass null object");
-
         if (img1 == img2)
             return true;
 
@@ -410,22 +366,23 @@ public class ImageManager {
     }
 
     /**
-     * Perform a 90 degree rotation on an image
+     * Perform a 90 degree rotation on an image to the right (clockwise)
      * @param img Image to rotate
+     * @return newimg The image rotated clockwise
      */
     public static Image rotate(Image img) {
 
         if (img == null)
-            throw new RuntimeException("Cannot pass null object");
-
+            throw new RuntimeException("Cannot pass null object.");
+        
         Integer width = img.getWidth();
         Integer height = img.getHeight();
         Image newimg = (img instanceof PGM ? new PGM(height, width, img.getMaxValue()) :
-                new PPM(height, width, img.getMaxValue()));
-
+                                             new PPM(height, width, img.getMaxValue()));
+        
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                newimg.setPixel(img.getPixel(i, width-j-1),j,i);
+                newimg.setPixel(img.getPixel(j,height-1-i),i,j);                
             }
         }
         return newimg;
