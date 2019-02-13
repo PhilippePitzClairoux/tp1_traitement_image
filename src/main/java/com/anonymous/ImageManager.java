@@ -11,8 +11,18 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class ImageManager {
+/**
+ * Contains static methods to manipulate PPM/PGM images
+ * @author Philippe Pitz Clairoux & Cynthia Vilanova
+ * Date of creation: February 7, 2019
+ */
 
+public class ImageManager {
+    /**
+     * Adds toAddFrom into toAddTo for 1D arrays. (toAddTo and toAddFrom MUST have the same length)
+     * @param toAddTo Source
+     * @param toAddFrom Destination
+     */
     private static void addArrays(Integer[] toAddTo, Integer[] toAddFrom) {
 
         if (toAddTo.length != toAddFrom.length)
@@ -24,9 +34,9 @@ public class ImageManager {
     }
 
     /**
-     * Open "filename" and load it's content inside "img"
+     * Open "file" and load it's content inside "img"
      * @param img Object to fill information in.
-     * @param file The name of the file to open.
+     * @param file A file object containing the image
      */
     public static void openFile(Image img, File file){
 
@@ -35,7 +45,7 @@ public class ImageManager {
 
         try {
             Scanner input = new Scanner(file);
-            String buff, header = "";
+            String buff;
 
             //get header
             while((buff = input.nextLine()) != null) {
@@ -45,10 +55,9 @@ public class ImageManager {
 
                 if (!buff.equals("P3") && !buff.equals("P2"))
                     throw new RuntimeException("Invalid header found");
-                else {
-                    header = buff;
+                else
                     break;
-                }
+
             }
 
             while((buff = input.nextLine()) != null) {
@@ -148,7 +157,7 @@ public class ImageManager {
     }
 
     /**
-     * Copy img1 into img2
+     * Copy src into dest
      * @param src To copy from
      * @param dest To copy to
      */
@@ -311,7 +320,6 @@ public class ImageManager {
                 for (int j = 0; j < img.getWidth(); j++) {
 
                     if (i >= y1 && i <= y2 && j >= x1 && j <= x2) {
-
                         Integer[] vals = img.getPixel(j, i).getPixelValue();
                         newimg.setPixel(new PixelPPM(vals[0], vals[1], vals[2]), xTracker, yTracker );
                         ++xTracker;
@@ -341,7 +349,7 @@ public class ImageManager {
     /**
      * Resize the current image
      * @param img Image to resize
-     * @return The new image
+     * @return The resized image image
      */
     public static Image resize(Image img) {
 

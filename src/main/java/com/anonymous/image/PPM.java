@@ -6,7 +6,8 @@ import com.anonymous.pixel.Pixel;
 
 /**
  *
- * @author Thia
+ * @author Philippe Pitz Clairoux & Cynthia Vilanova
+ * Date of creation: February 7, 2019
  */
 public class PPM extends Image {
 
