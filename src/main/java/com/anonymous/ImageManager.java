@@ -25,7 +25,6 @@ public class ImageManager {
         try {
             Scanner input = new Scanner(file);
             String buff, header = "";
-            int width = 0, height = 0;
 
             //get header
             while((buff = input.nextLine()) != null) {
@@ -48,21 +47,26 @@ public class ImageManager {
                     if (stats.length != 2)
                         throw new RuntimeException("Invalid Size");
                     else {
-                        img.setHeight(Integer.parseInt(stats[0]));
-                        img.setWidth(Integer.parseInt(stats[1]));
+                        img.setWidth(Integer.parseInt(stats[0]));
+                        img.setHeight(Integer.parseInt(stats[1]));
+                        img.updateInternalData();
                         break;
                     }
                 }
             }
 
-            img.setMaxValue(Integer.parseInt(input.nextLine()));
+            while((buff = input.nextLine()) != null)
+                if(!buff.startsWith("#") && !buff.equals("")) {
+                    img.setMaxValue(Integer.parseInt(buff));
+                    break;
+                }
 
             img.updateInternalData();
-            if (header.equals("P3")) {
+            if (img.header.equals("P3")) {
                 for (int i = 0; i < img.getHeight(); i++) {
                     for (int j = 0; j < img.getWidth(); j++) {
-                        img.setPixel(new PixelPPM(Integer.parseInt(input.next()),
-                                Integer.parseInt(input.next()), Integer.parseInt(input.next())), j, i);
+                        img.setPixel(new PixelPPM(input.nextInt(),
+                                input.nextInt(), input.nextInt()), j, i);
                     }
                 }
             } else {
@@ -97,7 +101,7 @@ public class ImageManager {
             //write header!
             out.write(String.format("%s%n", img.header));
             //write width and height!
-            out.write(String.format("%d %d%n", img.getHeight(), img.getWidth()));
+            out.write(String.format("%d %d%n", img.getWidth(), img.getHeight()));
             //write max value!
             out.write(String.format("%d%n", img.getMaxValue()));
 
@@ -215,7 +219,7 @@ public class ImageManager {
         Image newimg = (img instanceof PGM ? new PGM(newWidth, newHeight, img.getMaxValue()) :
                 new PPM(newWidth, newHeight, img.getMaxValue()));
 
-        if (img.getPixel(0, 0) instanceof PixelPGM)
+        if (img.header.equals("P2"))
             for (int i = 0; i < img.getHeight(); i+=2) {
                 for (int j = 0; j < img.getWidth(); j+=2) {
 
@@ -234,23 +238,22 @@ public class ImageManager {
             for (int i = 0; i < img.getHeight(); i += 2) {
                 for (int j = 0; j < img.getWidth(); j += 2) {
 
-                    Integer[] average = img.getPixel(i, j).getPixelValue();
+                    Integer[] average = img.getPixel(j, i).getPixelValue();
+                    Integer[] tmp;
 
-                    if (i + 1 < img.getWidth() && j + 1 < img.getHeight()) {
-
-                        Integer[] tmp = img.getPixel(i, j + 1).getPixelValue();
+                    if (j + 1 < img.getWidth() && i + 1 < img.getWidth()){
+                        tmp = img.getPixel(j + 1, i + 1).getPixelValue();
                         addArrays(average, tmp);
-
-                        tmp = img.getPixel(i + 1, j).getPixelValue();
+                    } else if (j + 1 < img.getWidth()) {
+                        tmp = img.getPixel(j + 1, i).getPixelValue();
                         addArrays(average, tmp);
-
-                        tmp = img.getPixel(i + 1, j + 1).getPixelValue();
+                    } else if (i + 1 < img.getHeight()) {
+                        tmp = img.getPixel(j, i + 1).getPixelValue();
                         addArrays(average, tmp);
-
                     }
 
                     newimg.setPixel(new PixelPPM(average[0] / 4,
-                            average[1] / 4, average[2] / 4), i /2 , j / 2);
+                            average[1] / 4, average[2] / 4), j /2 , i / 2);
                 }
             }
         return newimg;
@@ -267,7 +270,7 @@ public class ImageManager {
         if (img1 == img2)
             return true;
 
-        if (img1.getClass() != img1.getClass())
+        if (!img1.header.equals(img2.header))
             return false;
 
         if ((!img1.getWidth().equals(img2.getWidth())) && (!img1.getHeight().equals(img2.getHeight())))
@@ -275,7 +278,7 @@ public class ImageManager {
 
         for (int i = 0; i < img1.getHeight(); i++) {
             for (int j = 0; j < img1.getWidth(); j++) {
-                if (Arrays.equals(img1.getPixel(i, j).getPixelValue(), img2.getPixel(i, j).getPixelValue()))
+                if (!Arrays.equals(img1.getPixel(j, i).getPixelValue(), img2.getPixel(j, i).getPixelValue()))
                     return false;
             }
         }
