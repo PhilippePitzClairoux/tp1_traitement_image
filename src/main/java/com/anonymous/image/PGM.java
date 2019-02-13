@@ -1,4 +1,7 @@
-package com.anonymous;
+package com.anonymous.image;
+
+import com.anonymous.pixel.Pixel;
+import com.anonymous.pixel.PixelPGM;
 
 public class PGM extends Image {
 

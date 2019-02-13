@@ -1,8 +1,12 @@
 package com.anonymous;
 
 
+import com.anonymous.image.Image;
+import com.anonymous.image.PGM;
+import com.anonymous.image.PPM;
+import com.anonymous.pixel.PixelPPM;
+
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main {

@@ -1,4 +1,6 @@
-package com.anonymous;
+package com.anonymous.image;
+
+import com.anonymous.pixel.Pixel;
 
 public class Image {
 

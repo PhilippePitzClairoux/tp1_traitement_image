@@ -1,4 +1,4 @@
-package com.anonymous;
+package com.anonymous.pixel;
 
 public class PixelPGM extends Pixel {
 
