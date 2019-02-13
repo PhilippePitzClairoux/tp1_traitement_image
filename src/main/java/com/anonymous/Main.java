@@ -27,31 +27,32 @@ public class Main {
         System.out.println("Are the images the same ? " + ImageManager.areIdentical(test, test1));
 
         //openFile and writeFile with pgm
-        File f = new File("test.pgm");
+        File f = new File("test_images/test.pgm");
         ImageManager.openFile(test3 , f);
+        printArray(test3);
         ImageManager.brightness(test3, -30);
-        File f1 = new File("output.pgm");
+        File f1 = new File("test_images/output.pgm");
         ImageManager.writeFile(test3, f1);
 
         //openFile and writeFile with PPM
-        File f2 = new File("wow.ppm");
+        File f2 = new File("test_images/wow.ppm");
         ImageManager.openFile(test, f2);
         test = (PPM) ImageManager.resize(test);
-        File f3 = new File("output.ppm");
+        File f3 = new File("test_images/output.ppm");
         ImageManager.writeFile(test, f3);
 
         //openFile and writeFile with pgm
-        File f4 = new File("test.pgm");
+        File f4 = new File("test_images/test.pgm");
         ImageManager.openFile(test3 , f4);
         test3 = (PGM) ImageManager.crop(test3, 0, 0, 3, 3);
-        File f5 = new File("crop.pgm");
+        File f5 = new File("test_images/crop.pgm");
         ImageManager.writeFile(test3, f5);
 
         //openFile and writeFile with PPM
-        File f6 = new File("wow.ppm");
+        File f6 = new File("test_images/wow.ppm");
         ImageManager.openFile(test, f6);
         test = (PPM) ImageManager.crop(test, 0, 0, 0, 5);
-        File f7 = new File("crop.ppm");
+        File f7 = new File("test_images/crop.ppm");
         ImageManager.writeFile(test, f7);
 
 
@@ -65,7 +66,7 @@ public class Main {
 
         for (int i = 0; i < test.getHeight(); i++) {
             for (int j = 0; j < test.getWidth(); j++) {
-                System.out.print(Arrays.toString(test.getPixel(i, j).getPixelValue()));
+                System.out.print(Arrays.toString(test.getPixel(j, i).getPixelValue()));
             }
             System.out.println();
         }

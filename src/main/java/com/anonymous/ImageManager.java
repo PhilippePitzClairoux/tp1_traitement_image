@@ -331,7 +331,7 @@ public class ImageManager {
 
                     int average = img.getPixel(i, j).getPixelValue()[0];
 
-                    if (j + 1 < img.getWidth() && i + 1 < img.getWidth()){
+                    if (j + 1 < img.getWidth() && i + 1 < img.getHeight()){
 
                         average += img.getPixel(j + 1, i + 1).getPixelValue()[0];
 
@@ -355,7 +355,7 @@ public class ImageManager {
                     Integer[] average = img.getPixel(j, i).getPixelValue();
                     Integer[] tmp;
 
-                    if (j + 1 < img.getWidth() && i + 1 < img.getWidth()){
+                    if (j + 1 < img.getWidth() && i + 1 < img.getHeight()){
                         tmp = img.getPixel(j + 1, i + 1).getPixelValue();
                         addArrays(average, tmp);
                     } else if (j + 1 < img.getWidth()) {
