@@ -378,7 +378,7 @@ public class ImageManager {
         
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                newimg.setPixel(img.getPixel(i, width-j-1),j,i);                
+                newimg.setPixel(img.getPixel(j,height-1-i),i,j);                
             }
         }
         return newimg;
