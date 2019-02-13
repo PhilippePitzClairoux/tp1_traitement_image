@@ -1,8 +1,13 @@
 package com.anonymous.image;
 
-import com.anonymous.pixel.Pixel;
 import com.anonymous.pixel.PixelPPM;
+import com.anonymous.pixel.Pixel;
 
+
+/**
+ *
+ * @author Thia
+ */
 public class PPM extends Image {
 
 

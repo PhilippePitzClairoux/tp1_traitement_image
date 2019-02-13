@@ -3,9 +3,13 @@ package com.anonymous.image;
 import com.anonymous.pixel.Pixel;
 import com.anonymous.pixel.PixelPGM;
 
+/**
+ * 
+ * @author Philippe Pitz Clairoux & Cynthia Vilanova
+ * Date of creation: February 7, 2019
+ */
 public class PGM extends Image {
 
-    private final String header = "P2";
 
     /**
      * PGM constructor
