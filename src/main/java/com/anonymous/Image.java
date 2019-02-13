@@ -1,4 +1,4 @@
-package com.anonymous;
+package tp1;
 
 public class Image {
 

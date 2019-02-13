@@ -1,4 +1,4 @@
-package com.anonymous;
+package tp1;
 
 import java.io.*;
 import java.util.Arrays;
@@ -141,7 +141,7 @@ public class ImageManager {
     public static void copy(Image src, Image dest) {
 
         if (ImageManager.areIdentical(src, dest))
-            throw new RuntimeException("Images are already Identical");
+            throw new RuntimeException("Images are already identical.");
 
         if (!src.header.equals(dest.header))
             throw new RuntimeException("Classes differenciate. This cannot happen.");
@@ -261,9 +261,9 @@ public class ImageManager {
             for (int i = 0; i < img.getHeight(); i+=2) {
                 for (int j = 0; j < img.getWidth(); j+=2) {
 
-                    int average = img.getPixel(i, j).getPixelValue()[0];
+                    int average = img.getPixel(j, i).getPixelValue()[0];
 
-                    if (j + 1 < img.getWidth() && i + 1 < img.getWidth()){
+                    if (j + 1 < img.getWidth() && i + 1 < img.getHeight()){
 
                         average += img.getPixel(j + 1, i + 1).getPixelValue()[0];
 
@@ -287,7 +287,7 @@ public class ImageManager {
                     Integer[] average = img.getPixel(j, i).getPixelValue();
                     Integer[] tmp;
 
-                    if (j + 1 < img.getWidth() && i + 1 < img.getWidth()){
+                    if (j + 1 < img.getWidth() && i + 1 < img.getHeight()){
                         tmp = img.getPixel(j + 1, i + 1).getPixelValue();
                         addArrays(average, tmp);
                     } else if (j + 1 < img.getWidth()) {
@@ -332,10 +332,25 @@ public class ImageManager {
     }
 
     /**
-     * Perform a 90 degree rotation on an image
+     * Perform a 90 degree rotation on an image to the right (clockwise)
      * @param img Image to rotate
+     * @return 
      */
-    public static void rotate(Image img) {
+    public static Image rotate(Image img) {
 
+        if (img == null)
+            throw new RuntimeException("Cannot pass null object");
+        
+        Integer width = img.getWidth();
+        Integer height = img.getHeight();
+        Image newimg = (img instanceof PGM ? new PGM(height, width, img.getMaxValue()) :
+                                             new PPM(height, width, img.getMaxValue()));
+        
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                newimg.setPixel(img.getPixel(i, width-j-1),j,i);
+            }
+        }
+        return newimg;
     }
 }

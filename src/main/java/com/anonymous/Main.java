@@ -1,55 +1,47 @@
-package com.anonymous;
+package tp1;
 
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main {
 
     public static void main(String[] argv) {
 
-        PPM test = new PPM(10, 10, 255);
-        PPM test1 = new PPM(10, 10, 255);
-        PPM test2 = new PPM(10, 10, 1);
-        PGM test3 = new PGM(10, 10, 1);
-
-        //PGM test3 = new PGM(0, 0, 255);
-
-        for (int i = 0; i < test.getWidth(); i++) {
-            for (int j = 0; j < test.getHeight(); j++) {
-                test1.setPixel(new PixelPPM((int) ((Math.random() * 100) % 255),(int) ((Math.random() * 100) % 255), (int) ((Math.random() * 100) % 255)), j, i);
-                test.setPixel(new PixelPPM((int) ((Math.random() * 100) % 255),(int) ((Math.random() * 100) % 255), (int) ((Math.random() * 100) % 255)), j, i);
-            }
-        }
-
-        ImageManager.copy(test, test1);
-        System.out.println("Are the images the same ? " + ImageManager.areIdentical(test, test1));
-
-
-        printArray(test);
-
-        //test = (PPM) ImageManager.resize(test);
-        System.out.println("New image : \n");
-        printArray(test);
+        PPM testPPM = new PPM(10, 10, 255);
+        PPM test1PPM = new PPM(10, 50, 255);
+        PGM testPGM = new PGM(10, 10, 255);
 
         //openFile and writeFile with pgm
         File f = new File("test.pgm");
-        ImageManager.openFile(test3 , f);
-        ImageManager.brightness(test3, 1024);
+        ImageManager.openFile(testPGM , f);
+        //ImageManager.brightness(testPGM, 1024);
         File f1 = new File("output.pgm");
-        ImageManager.writeFile(test3, f1);
-
+        ImageManager.writeFile(testPGM, f1);
+        
         //openFile and writeFile with PPM
         File f2 = new File("wow.ppm");
-        ImageManager.openFile(test, f2);
-        test = (PPM) ImageManager.resize(test);
+        ImageManager.openFile(testPPM, f2);
+        testPPM = (PPM) ImageManager.resize(testPPM);
         File f3 = new File("output.ppm");
-        ImageManager.writeFile(test, f3);
-
-
-
-
+        ImageManager.writeFile(testPPM, f3);
+        
+        ImageManager.copy(testPPM, test1PPM);
+        System.out.println("Are the images the same ? " + ImageManager.areIdentical(testPPM, test1PPM));
+        
+        //Original image
+        printArray(testPGM);
+       
+        // Resize
+        testPGM = (PGM) ImageManager.resize(testPGM);
+        System.out.println("\nNew image after resize: ");
+        printArray(testPGM);
+        
+        // Rotate image
+        testPGM = (PGM) ImageManager.rotate(testPGM);
+        System.out.println("\nNew image after rotate: ");
+        printArray(testPGM);
+        
     }
 
     private static void printArray(Image test) {
@@ -59,7 +51,7 @@ public class Main {
 
         for (int i = 0; i < test.getHeight(); i++) {
             for (int j = 0; j < test.getWidth(); j++) {
-                System.out.print(Arrays.toString(test.getPixel(i, j).getPixelValue()));
+                System.out.print(Arrays.toString(test.getPixel(j, i).getPixelValue()));
             }
             System.out.println();
         }
