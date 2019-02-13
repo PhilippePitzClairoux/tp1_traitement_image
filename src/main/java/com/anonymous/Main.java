@@ -11,7 +11,6 @@ public class Main {
 
         PPM test = new PPM(10, 10, 255);
         PPM test1 = new PPM(10, 10, 255);
-        PPM test2 = new PPM(10, 10, 1);
         PGM test3 = new PGM(10, 10, 1);
 
         //PGM test3 = new PGM(0, 0, 255);
@@ -55,6 +54,19 @@ public class Main {
         File f7 = new File("test_images/crop.ppm");
         ImageManager.writeFile(test, f7);
 
+        //openFile and writeFile with PPM
+        File f8 = new File("test_images/wow.ppm");
+        ImageManager.openFile(test, f8);
+        test = (PPM) ImageManager.rotate(test);
+        File f9 = new File("test_images/rotate.ppm");
+        ImageManager.writeFile(test, f9);
+
+        //openFile and writeFile with PPM
+        File f10 = new File("test_images/test.pgm");
+        ImageManager.openFile(test3, f10);
+        test3 = (PGM) ImageManager.rotate(test3);
+        File f11 = new File("test_images/rotate.pgm");
+        ImageManager.writeFile(test3, f11);
 
 
     }
