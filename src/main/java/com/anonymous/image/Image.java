@@ -54,7 +54,7 @@ public class Image {
         if (pix == null)
             throw new RuntimeException("Null pixel has been passed.");
 
-        data[col][row] = pix;
+        data[row][col] = pix;
     }
 
     /**
@@ -64,7 +64,7 @@ public class Image {
      * @return Return the pixel at the position (row,col)
      */
     public Pixel getPixel(Integer row, Integer col) {
-        return data[col][row];
+        return data[row][col];
     }
 
     /**
