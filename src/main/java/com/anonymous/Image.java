@@ -1,11 +1,19 @@
 package tp1;
 
+/**
+ *
+ * @author Thia
+ */
 public class Image {
 
     private Pixel[][] data;
     private Integer width;
     private Integer height;
     private Integer maxValue;
+
+    /**
+     *
+     */
     public final String header;
 
 
@@ -14,6 +22,7 @@ public class Image {
      * @param width Width of the image
      * @param height Height of the image
      * @param maxValue The highest value a pixel can have
+     * @param header
      */
     public Image(Integer width, Integer height, Integer maxValue, String header) {
         this.maxValue = maxValue;
@@ -92,10 +101,17 @@ public class Image {
         return maxValue;
     }
 
+    /**
+     *
+     * @param maxval
+     */
     public void setMaxValue(Integer maxval) {
         this.maxValue = maxval;
     }
 
+    /**
+     *
+     */
     public void updateInternalData() {
         this.data = new Pixel[height][width];
     }

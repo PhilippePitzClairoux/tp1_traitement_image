@@ -1,5 +1,9 @@
 package tp1;
 
+/**
+ *
+ * @author Thia
+ */
 public class PixelPGM extends Pixel {
 
     private Integer greyValue;

@@ -1,4 +1,9 @@
 package tp1;
+
+/**
+ *
+ * @author Thia
+ */
 public abstract class Pixel {
 
     /**

@@ -1,5 +1,9 @@
 package tp1;
 
+/**
+ *
+ * @author Thia
+ */
 public class PixelPPM extends Pixel {
 
     private Integer red;

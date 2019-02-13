@@ -1,5 +1,9 @@
 package tp1;
 
+/**
+ *
+ * @author Thia
+ */
 public class PGM extends Image {
 
     private final String header = "P2";

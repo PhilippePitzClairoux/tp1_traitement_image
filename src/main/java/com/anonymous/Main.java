@@ -4,8 +4,16 @@ package tp1;
 import java.io.File;
 import java.util.Arrays;
 
+/**
+ *
+ * @author Thia
+ */
 public class Main {
 
+    /**
+     *
+     * @param argv
+     */
     public static void main(String[] argv) {
 
         PPM testPPM = new PPM(10, 10, 255);
@@ -22,25 +30,37 @@ public class Main {
         //openFile and writeFile with PPM
         File f2 = new File("wow.ppm");
         ImageManager.openFile(testPPM, f2);
+        //printArray(testPPM);
+        // Rotate image PPM
+        testPPM = (PPM) ImageManager.rotate(testPPM);
+        System.out.println("\nNew image after rotate: ");
+        printArray(testPPM);
+        
         testPPM = (PPM) ImageManager.resize(testPPM);
         File f3 = new File("output.ppm");
         ImageManager.writeFile(testPPM, f3);
         
-        ImageManager.copy(testPPM, test1PPM);
-        System.out.println("Are the images the same ? " + ImageManager.areIdentical(testPPM, test1PPM));
+        //ImageManager.copy(testPPM, test1PPM);
+        //System.out.println("Are the images the same ? " + ImageManager.areIdentical(testPPM, test1PPM));
         
         //Original image
-        printArray(testPGM);
+        printArray(testPPM);
        
         // Resize
         testPGM = (PGM) ImageManager.resize(testPGM);
         System.out.println("\nNew image after resize: ");
         printArray(testPGM);
         
-        // Rotate image
+        // Rotate image PGM
         testPGM = (PGM) ImageManager.rotate(testPGM);
         System.out.println("\nNew image after rotate: ");
         printArray(testPGM);
+        
+        //Dominant color
+        Pixel dominantColorPPM = ImageManager.dominantColor(testPPM);
+        System.out.println("Dominant color: " + Arrays.toString(dominantColorPPM.getPixelValue()));
+        Pixel dominantColorPGM = ImageManager.dominantColor(testPGM);
+        System.out.println("Dominant color: " + Arrays.toString(dominantColorPGM.getPixelValue()));
         
     }
 
