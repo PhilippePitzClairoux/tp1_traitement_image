@@ -2,7 +2,8 @@ package com.anonymous.pixel;
 
 /**
  *
- * @author Thia
+ * @author Philippe Pitz Clairoux & Cynthia Vilanova
+ * Date of creation: February 7, 2019
  */
 public class PixelPPM extends Pixel {
 

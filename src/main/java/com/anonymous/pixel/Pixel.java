@@ -2,7 +2,8 @@ package com.anonymous.pixel;
 
 /**
  *
- * @author Thia
+ * @author Philippe Pitz Clairoux & Cynthia Vilanova
+ * Date of creation: February 7, 2019
  */
 public abstract class Pixel {
 
@@ -11,4 +12,5 @@ public abstract class Pixel {
      * @return value of the pixel (either a single value or RGB)
      */
     public abstract Integer[] getPixelValue();
+
 }
