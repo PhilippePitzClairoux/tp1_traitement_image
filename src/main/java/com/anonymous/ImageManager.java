@@ -414,22 +414,18 @@ public class ImageManager {
      * @param img Image to rotate
      */
     public static Image rotate(Image img) {
+
         if (img == null)
             throw new RuntimeException("Cannot pass null object");
 
         Integer width = img.getWidth();
         Integer height = img.getHeight();
-        Image newimg = (img instanceof PGM ? new PGM(width, height, img.getMaxValue()) :
-                new PPM(width, height, img.getMaxValue()));
+        Image newimg = (img instanceof PGM ? new PGM(height, width, img.getMaxValue()) :
+                new PPM(height, width, img.getMaxValue()));
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                if (newimg.header.equals("P3")) {
-                    Integer[] vals = img.getPixel( width-j-1, i).getPixelValue();
-                    newimg.setPixel(new PixelPPM(vals[0], vals[1], vals[2]), j, i);
-                } else {
-                    newimg.setPixel(new PixelPGM(img.getPixel(width-j-1, i).getPixelValue()[0]), j, i);
-                }
+                newimg.setPixel(img.getPixel(i, width-j-1),j,i);
             }
         }
         return newimg;
