@@ -213,8 +213,8 @@ public class ImageManager {
             throw new RuntimeException("Image is already too small to resize");
 
 
-        final int newWidth = img.getWidth() / 2;
-        final int newHeight = img.getHeight() / 2;
+        final int newWidth = (int) Math.ceil(img.getWidth() / 2d);
+        final int newHeight = (int) Math.ceil(img.getHeight() / 2d);
 
         Image newimg = (img instanceof PGM ? new PGM(newWidth, newHeight, img.getMaxValue()) :
                 new PPM(newWidth, newHeight, img.getMaxValue()));
@@ -251,7 +251,7 @@ public class ImageManager {
                         tmp = img.getPixel(j, i + 1).getPixelValue();
                         addArrays(average, tmp);
                     }
-
+                    System.out.printf("Setting : i %d, j %d%n", i / 2, j / 2);
                     newimg.setPixel(new PixelPPM(average[0] / 4,
                             average[1] / 4, average[2] / 4), j /2 , i / 2);
                 }

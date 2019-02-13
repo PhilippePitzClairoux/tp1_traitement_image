@@ -29,7 +29,7 @@ public class Main {
 
         printArray(test);
 
-        test = (PPM) ImageManager.resize(test);
+        //test = (PPM) ImageManager.resize(test);
         System.out.println("New image : \n");
         printArray(test);
 
@@ -42,7 +42,7 @@ public class Main {
         //openFile and writeFile with PPM
         File f2 = new File("wow.ppm");
         ImageManager.openFile(test, f2);
-        ImageManager.resize(test);
+        test = (PPM) ImageManager.resize(test);
         File f3 = new File("output.ppm");
         ImageManager.writeFile(test, f3);
 

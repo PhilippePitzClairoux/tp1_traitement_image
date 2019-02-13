@@ -24,7 +24,7 @@ public class Image {
 
         this.width = width;
         this.height = height;
-        this.data = new Pixel[width][height];
+        this.data = new Pixel[height][width];
     }
 
 
