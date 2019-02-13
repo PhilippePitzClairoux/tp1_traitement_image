@@ -49,12 +49,12 @@ public class Image {
      * @param row The row in which the data is located
      * @param col The column in which the data is located
      */
-    public void setPixel(Pixel pix, Integer row, Integer col) {
+    public void setPixel(Pixel pix, Integer col, Integer row) {
 
         if (pix == null)
             throw new RuntimeException("Null pixel has been passed.");
 
-        data[col][row] = pix;
+        data[row][col] = pix;
     }
 
     /**
@@ -63,8 +63,8 @@ public class Image {
      * @param col The column in which the data is located
      * @return Return the pixel at the position (row,col)
      */
-    public Pixel getPixel(Integer row, Integer col) {
-        return data[col][row];
+    public Pixel getPixel(Integer col, Integer row) {
+        return data[row][col];
     }
 
     /**

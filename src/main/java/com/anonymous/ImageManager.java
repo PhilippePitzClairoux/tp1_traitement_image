@@ -8,11 +8,21 @@ import com.anonymous.pixel.PixelPGM;
 import com.anonymous.pixel.PixelPPM;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.lang.reflect.Array;
+import java.util.*;
+
+/**
+ * Contains static methods to manipulate PPM/PGM images
+ * @author Philippe Pitz Clairoux & Cynthia Vilanova
+ * Date of creation: February 7, 2019
+ */
 
 public class ImageManager {
-
+    /**
+     * Adds toAddFrom into toAddTo for 1D arrays. (toAddTo and toAddFrom MUST have the same length)
+     * @param toAddTo Source
+     * @param toAddFrom Destination
+     */
     private static void addArrays(Integer[] toAddTo, Integer[] toAddFrom) {
 
         if (toAddTo.length != toAddFrom.length)
@@ -23,10 +33,29 @@ public class ImageManager {
         }
     }
 
+    private static boolean arrayContainsPixel(ArrayList<Object> a, Pixel b) {
+
+        for (int i = 0; i < a.size(); i++) {
+            if (Arrays.equals(((Pixel) a.get(i)).getPixelValue(), b.getPixelValue()))
+                return true;
+        }
+        return false;
+    }
+
+    private static int getIndexOfPixel(ArrayList<Object> a, Pixel b) {
+
+        for (int i = 0; i < a.size(); i++) {
+            if (Arrays.equals(((Pixel) a.get(i)).getPixelValue(), b.getPixelValue()))
+                return i;
+        }
+        return -1;
+    }
+
+
     /**
-     * Open "filename" and load it's content inside "img"
+     * Open "file" and load it's content inside "img"
      * @param img Object to fill information in.
-     * @param file The name of the file to open.
+     * @param file A file object containing the image
      */
     public static void openFile(Image img, File file){
 
@@ -35,7 +64,7 @@ public class ImageManager {
 
         try {
             Scanner input = new Scanner(file);
-            String buff, header = "";
+            String buff;
 
             //get header
             while((buff = input.nextLine()) != null) {
@@ -45,10 +74,9 @@ public class ImageManager {
 
                 if (!buff.equals("P3") && !buff.equals("P2"))
                     throw new RuntimeException("Invalid header found");
-                else {
-                    header = buff;
+                else
                     break;
-                }
+
             }
 
             while((buff = input.nextLine()) != null) {
@@ -148,7 +176,7 @@ public class ImageManager {
     }
 
     /**
-     * Copy img1 into img2
+     * Copy src into dest
      * @param src To copy from
      * @param dest To copy to
      */
@@ -188,35 +216,46 @@ public class ImageManager {
      * @param img The image to fetch the pixel from
      * @return The most used pixel/color
      */
-    public static Pixel predominantColor(Image img) {
+    public static Pixel dominantColor(Image img) {
 
         if (img == null)
             throw new RuntimeException("Cannot pass null object");
 
-        if(img instanceof PPM) {
-            Integer sumR = 0, sumG = 0, sumB = 0;
-            for (int i = 0; i < img.getHeight(); i++) {
-                for (int j= 0; j < img.getWidth(); j++) {
-                    PixelPPM pixel = (PixelPPM) img.getPixel(j, i);
-                    sumR += pixel.getRed();
-                    sumG += pixel.getGreen();
-                    sumB += pixel.getBlue();
+        /*
+            Index [0] is a pixel
+            Index [1] is an Integer
+        */
+        ArrayList<ArrayList<Object>> stats = new ArrayList<ArrayList<Object>>();
+        stats.add(new ArrayList<Object>());
+        stats.add(new ArrayList<Object>());
+
+        for (int y = 0; y < img.getHeight(); y++) {
+            for (int x = 0; x < img.getWidth(); x++) {
+                System.out.printf("Current x %d Current y %d%n", x, y);
+
+                if (stats.get(0).size() == 0 || !arrayContainsPixel(stats.get(0), img.getPixel(x, y))) {
+                    stats.get(0).add(img.getPixel(x, y));
+                    stats.get(1).add(1);
+                } else {
+
+                    int index = getIndexOfPixel(stats.get(0), img.getPixel(x, y));
+                    stats.get(1).set(index, (Integer) stats.get(1).get(index) + 1);
+
                 }
             }
-            int numPixels = img.getWidth()*img.getHeight();
-            return new PixelPPM(sumR / numPixels, sumG / numPixels, sumB / numPixels);
         }
-        else {
-            Integer sum = 0;
-            for (int i = 0; i < img.getHeight(); i++) {
-                for (int j= 0; j < img.getWidth(); j++) {
-                    PixelPGM pixel = (PixelPGM) img.getPixel(j, i);
-                    sum += pixel.getPixelValue()[0];
-                }
+
+        int biggestPixel = 0;
+
+        for (int i = 0; i < stats.get(1).size(); i++) {
+            if ((Integer) stats.get(1).get(i) > (Integer) stats.get(1).get(biggestPixel)) {
+                biggestPixel = i;
             }
-            int numPixels = img.getWidth()*img.getHeight();
-            return new PixelPGM(sum/numPixels);
         }
+
+        return (img instanceof PGM ? new PixelPGM((PixelPGM) stats.get(0).get(biggestPixel)) :
+                new PixelPPM((PixelPPM) stats.get(0).get(biggestPixel)));
+
     }
 
     /**
@@ -311,7 +350,6 @@ public class ImageManager {
                 for (int j = 0; j < img.getWidth(); j++) {
 
                     if (i >= y1 && i <= y2 && j >= x1 && j <= x2) {
-
                         Integer[] vals = img.getPixel(j, i).getPixelValue();
                         newimg.setPixel(new PixelPPM(vals[0], vals[1], vals[2]), xTracker, yTracker );
                         ++xTracker;
@@ -341,7 +379,7 @@ public class ImageManager {
     /**
      * Resize the current image
      * @param img Image to resize
-     * @return The new image
+     * @return The resized image image
      */
     public static Image resize(Image img) {
 

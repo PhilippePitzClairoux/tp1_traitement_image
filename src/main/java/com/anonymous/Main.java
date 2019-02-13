@@ -4,6 +4,7 @@ package com.anonymous;
 import com.anonymous.image.Image;
 import com.anonymous.image.PGM;
 import com.anonymous.image.PPM;
+import com.anonymous.pixel.PixelPGM;
 import com.anonymous.pixel.PixelPPM;
 
 import java.io.File;
@@ -34,14 +35,14 @@ public class Main {
         ImageManager.openFile(test3 , f);
         printArray(test3);
         ImageManager.brightness(test3, -30);
-        File f1 = new File("test_images/output.pgm");
+        File f1 = new File("test_images/resize.pgm");
         ImageManager.writeFile(test3, f1);
 
         //openFile and writeFile with PPM
         File f2 = new File("test_images/wow.ppm");
         ImageManager.openFile(test, f2);
         test = (PPM) ImageManager.resize(test);
-        File f3 = new File("test_images/output.ppm");
+        File f3 = new File("test_images/resize.ppm");
         ImageManager.writeFile(test, f3);
 
         //openFile and writeFile with pgm
@@ -72,6 +73,14 @@ public class Main {
         File f11 = new File("test_images/rotate.pgm");
         ImageManager.writeFile(test3, f11);
 
+        PixelPGM ppgm = (PixelPGM) ImageManager.dominantColor(test3);
+        PixelPPM  ppm = (PixelPPM) ImageManager.dominantColor(test);
+
+        printArray(test3);
+        printArray(test);
+
+        System.out.printf("Predominant color of test.pgm : %s%n", Arrays.toString(ppgm.getPixelValue()));
+        System.out.printf("Predominant color of test.pgm : %s%n", Arrays.toString(ppm.getPixelValue()));
 
     }
 
