@@ -5,7 +5,6 @@ import com.anonymous.pixel.PixelPGM;
 
 public class PGM extends Image {
 
-    private final String header = "P2";
 
     /**
      * PGM constructor

@@ -5,7 +5,6 @@ import com.anonymous.pixel.PixelPPM;
 
 public class PPM extends Image {
 
-
     /**
      * PPM constructor
      * @param width The Width of the PPM image
