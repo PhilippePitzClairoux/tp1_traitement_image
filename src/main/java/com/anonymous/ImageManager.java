@@ -179,10 +179,48 @@ public class ImageManager {
     /**
      * Change the brightness of an image
      * @param img Image that's going to be modify
-     * @param i The level of brightness
+     * @param v The level of brightness
      */
-    public static void brightness(Image img, Integer i) {
+    public static void brightness(Image img, Integer v) {
 
+        if (img.header.equals("P3")) {
+            for (int i = 0; i < img.getHeight(); i++) {
+                for (int j = 0; j < img.getWidth(); j++) {
+
+                    Integer[] toTransform = img.getPixel(j, i).getPixelValue();
+                    PixelPPM tmp = (PixelPPM) img.getPixel(j, i);
+
+                    for (int z = 0; i < toTransform.length; z++) {
+                        if ((toTransform[z] + v) <= img.getMaxValue() && (toTransform[z] + v) >= 0)
+                            toTransform[z] += v;
+                        else if (toTransform[0] + v > img.getMaxValue()) {
+                            toTransform[z] = img.getMaxValue();
+                        } else {
+                            toTransform[z] = 0;
+                        }
+                    }
+
+                    tmp.setRed(toTransform[0]);
+                    tmp.setGreen(toTransform[1]);
+                    tmp.setBlue(toTransform[2]);
+                }
+            }
+        } else {
+            for (int i = 0; i < img.getHeight(); i++) {
+                for (int j = 0; j < img.getWidth(); j++) {
+
+                    Integer[] toTransform = img.getPixel(j, i).getPixelValue();
+                    PixelPGM tmp = (PixelPGM) img.getPixel(j, i);
+                    if ((toTransform[0] + v) <= img.getMaxValue() && (toTransform[0] + v) >= 0)
+                        tmp.setGreyValue(toTransform[0] + v);
+                    else if (toTransform[0] + v > img.getMaxValue()) {
+                        tmp.setGreyValue(img.getMaxValue());
+                    } else {
+                        tmp.setGreyValue(0);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -225,10 +263,18 @@ public class ImageManager {
 
                     int average = img.getPixel(i, j).getPixelValue()[0];
 
-                    if (i + 1 <= img.getHeight() && j + 1 <= img.getWidth()) {
-                        average += img.getPixel(i, j+1).getPixelValue()[0];
-                        average += img.getPixel(i + 1, j).getPixelValue()[0];
-                        average += img.getPixel(i + 1, j + 1).getPixelValue()[0];
+                    if (j + 1 < img.getWidth() && i + 1 < img.getWidth()){
+
+                        average += img.getPixel(j + 1, i + 1).getPixelValue()[0];
+
+                    } else if (j + 1 < img.getWidth()) {
+
+                        average += img.getPixel(j + 1, i).getPixelValue()[0];
+
+                    } else if (i + 1 < img.getHeight()) {
+
+                        average += img.getPixel(j , i + 1).getPixelValue()[0];
+
                     }
 
                     newimg.setPixel(new PixelPGM(average / 4), i / 2, j / 2);
@@ -251,7 +297,7 @@ public class ImageManager {
                         tmp = img.getPixel(j, i + 1).getPixelValue();
                         addArrays(average, tmp);
                     }
-                    System.out.printf("Setting : i %d, j %d%n", i / 2, j / 2);
+
                     newimg.setPixel(new PixelPPM(average[0] / 4,
                             average[1] / 4, average[2] / 4), j /2 , i / 2);
                 }

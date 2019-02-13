@@ -36,6 +36,7 @@ public class Main {
         //openFile and writeFile with pgm
         File f = new File("test.pgm");
         ImageManager.openFile(test3 , f);
+        ImageManager.brightness(test3, 1024);
         File f1 = new File("output.pgm");
         ImageManager.writeFile(test3, f1);
 
