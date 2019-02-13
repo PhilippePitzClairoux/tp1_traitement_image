@@ -414,6 +414,20 @@ public class ImageManager {
      * @param img Image to rotate
      */
     public static Image rotate(Image img) {
-        return new Image(10, 10, 10, "");
+
+        if (img == null)
+            throw new RuntimeException("Cannot pass null object");
+
+        Integer width = img.getWidth();
+        Integer height = img.getHeight();
+        Image newimg = (img instanceof PGM ? new PGM(height, width, img.getMaxValue()) :
+                new PPM(height, width, img.getMaxValue()));
+
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                newimg.setPixel(img.getPixel(i, width-j-1),j,i);
+            }
+        }
+        return newimg;
     }
 }
