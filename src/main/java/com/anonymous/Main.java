@@ -1,12 +1,12 @@
-package tp1;
-
+package com.anonymous;
 
 import java.io.File;
 import java.util.Arrays;
 
 /**
- *
- * @author Thia
+ * Read a PGM or PPM image from a file and test operations on the image
+ * @author Philippe Pitz Clairoux & Cynthia Vilanova
+ * Date of creation: February 7, 2019
  */
 public class Main {
 

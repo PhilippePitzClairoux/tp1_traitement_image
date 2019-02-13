@@ -1,8 +1,9 @@
-package tp1;
+package com.anonymous;
 
 /**
- *
- * @author Thia
+ * 
+ * @author Philippe Pitz Clairoux & Cynthia Vilanova
+ * Date of creation: February 7, 2019
  */
 public class PGM extends Image {
 

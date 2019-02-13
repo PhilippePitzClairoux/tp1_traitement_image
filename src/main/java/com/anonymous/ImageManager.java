@@ -1,12 +1,13 @@
-package tp1;
+package com.anonymous;
 
 import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
 
 /**
- *
- * @author Thia
+ * Operations applicable on an image, either in PGM format or PPM format.
+ * @author Philippe Pitz Clairoux & Cynthia Vilanova
+ * Date of creation: February 7, 2019
  */
 public class ImageManager {
 
@@ -49,7 +50,7 @@ public class ImageManager {
                 if (!buff.matches(" ") && !buff.startsWith("#")){
                     String[] stats = buff.split(" ");
                     if (stats.length != 2)
-                        throw new RuntimeException("Invalid Size");
+                        throw new RuntimeException("Invalid size");
                     else {
                         img.setWidth(Integer.parseInt(stats[0]));
                         img.setHeight(Integer.parseInt(stats[1]));
