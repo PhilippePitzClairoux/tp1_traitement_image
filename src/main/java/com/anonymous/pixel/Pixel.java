@@ -1,4 +1,4 @@
-package com.anonymous;
+package com.anonymous.pixel;
 
 public abstract class Pixel {
 
